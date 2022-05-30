@@ -38,6 +38,10 @@ end
 
 post '/new_post' do
 	@text = params[:content]
-	@error = "The field is empty. Input your message" if @text.length == 0
+	if @text.length == 0
+		@error = "The field is empty. Input your message"
+	else
+	@db.execute 'insert into "Posts" (content, created_date) values (?, datetime())', [@text]
+	end
 	return erb :new_post
 end
