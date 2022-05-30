@@ -16,3 +16,8 @@ get '/posts' do
 	
 	erb :posts
 end
+
+post '/new_post' do
+	@text = params[:content]
+	erb :new_post
+end
