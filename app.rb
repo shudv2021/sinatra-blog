@@ -6,10 +6,20 @@ require 'sqlite3'
 
 def db_init
 	@db = SQLite3::Database.new 'blog.db'
+	@db.results_as_hash = true
 end
 
 before do
 	db_init
+	@db.execute 'create table if not exists "Posts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT,
+																									"created_date"  DATE,
+																									"content" TEXT);
+							'
+end
+
+configure do
+	db_init
+	@db
 end
 
 get '/' do
@@ -28,5 +38,6 @@ end
 
 post '/new_post' do
 	@text = params[:content]
-	erb :new_post
+	@error = "The field is empty. Input your message" if @text.length == 0
+	return erb :new_post
 end
