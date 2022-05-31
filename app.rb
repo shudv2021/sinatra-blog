@@ -43,6 +43,7 @@ post '/new_post' do
 		@error = "The field is empty. Input your message"
 	else
 	@db.execute 'insert into "Posts" (content, created_date) values (?, datetime())', [@text]
+	redirect to '/'
 	end
 	return erb :new_post
 end
