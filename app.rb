@@ -55,6 +55,16 @@ erb :detales
 end
 
 post '/detales/:post_id' do
-	erb "<%=params[:comment]%>,  <%=params[:post_id]%> "
+	content = params[:comment]
+	post_id = params[:post_id]
 	
+	@db.execute 'insert into "Comments"
+							(content,
+							created_date,
+							post_id)
+											values (?, datetime(), ?)', 
+											[content, post_id]
+
+	@comments = "something"
+	redirect to "/detales/#{post_id}"
 end
