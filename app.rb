@@ -51,6 +51,8 @@ end
 get '/detales/:post_id' do
 	result = @db.execute ' select * from "Posts" where id=?', [params[:post_id]]
 	@row = result[0]
+	@comments = @db.execute 'select * from "Comments" where post_id=?',[params[:post_id]]
+	
 erb :detales
 end
 
@@ -65,6 +67,5 @@ post '/detales/:post_id' do
 											values (?, datetime(), ?)', 
 											[content, post_id]
 
-	@comments = "something"
 	redirect to "/detales/#{post_id}"
 end

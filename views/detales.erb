@@ -6,7 +6,15 @@
 </div>
 
 <h4>Comments</h4>
-<%=@comments.class%>
+<ul>
+<%@comments.each do |comment|%>
+    <li>
+      <div style='font-size:75%; color: grey'><%=comment['created_date']%><br> </div>
+      <%=comment['content']%>
+    </li>
+<%end%>
+</ul>
+
 
 <h4> Add comment:</h4>
 
