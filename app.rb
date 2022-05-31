@@ -47,3 +47,7 @@ post '/new_post' do
 	end
 	return erb :new_post
 end
+
+get '/detales/:post_id' do
+	erb "details #{params.each {|param| param}}"
+end
