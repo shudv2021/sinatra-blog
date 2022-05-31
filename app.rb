@@ -15,6 +15,11 @@ before do
 																									"created_date"  DATE,
 																									"content" TEXT);
 							'
+	@db.execute 'create table if not exists "Comments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT,
+	"created_date"  DATE,
+	"content" TEXT,
+	"post_id" INTEGER);
+'						
 end
 
 configure do
@@ -30,11 +35,6 @@ end
 get '/new_post' do 
 	
 	erb :new_post
-end
-
-get '/posts' do
-	
-	erb :index
 end
 
 post '/new_post' do
@@ -54,6 +54,7 @@ get '/detales/:post_id' do
 erb :detales
 end
 
-post '/comment' do
-	erb "<%=params[:comment]%>"
+post '/detales/:post_id' do
+	erb "<%=params[:comment]%>,  <%=params[:post_id]%> "
+	
 end
