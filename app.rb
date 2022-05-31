@@ -49,5 +49,7 @@ post '/new_post' do
 end
 
 get '/detales/:post_id' do
-	erb "details #{params.each {|param| param}}"
+	result = @db.execute ' select * from "Posts" where id=?', [params[:post_id]]
+	@row = result[0]
+erb :detales
 end
