@@ -34,7 +34,7 @@ end
 
 get '/posts' do
 	
-	erb :posts
+	erb :index
 end
 
 post '/new_post' do
@@ -52,4 +52,8 @@ get '/detales/:post_id' do
 	result = @db.execute ' select * from "Posts" where id=?', [params[:post_id]]
 	@row = result[0]
 erb :detales
+end
+
+post '/comment' do
+	erb "<%=params[:comment]%>"
 end
