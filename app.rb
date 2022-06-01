@@ -3,6 +3,7 @@ require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader'
 require 'sqlite3'
+require 'pry'
 
 def db_init
 	@db = SQLite3::Database.new 'blog.db'
@@ -13,7 +14,8 @@ before do
 	db_init
 	@db.execute 'create table if not exists "Posts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT,
 																									"created_date"  DATE,
-																									"content" TEXT);
+																									"content" TEXT,
+																									"author" TEXT);
 							'
 	@db.execute 'create table if not exists "Comments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT,
 	"created_date"  DATE,
@@ -39,10 +41,11 @@ end
 
 post '/new_post' do
 	@text = params[:content]
-	if @text.length == 0
-		@error = "The field is empty. Input your message"
+	@author = params[:author]
+	if @text.length == 0 || @author.length == 0
+		@error = "The one of fields is empty. Input your message or name"
 	else
-	@db.execute 'insert into "Posts" (content, created_date) values (?, datetime())', [@text]
+	@db.execute 'insert into "Posts" (content, created_date, author) values (?, datetime(), ?)', [@text, @author]
 	redirect to '/'
 	end
 	return erb :new_post
@@ -59,13 +62,16 @@ end
 post '/detales/:post_id' do
 	content = params[:comment]
 	post_id = params[:post_id]
-	
+	if content.length == 0
+		@error = 'Erorrrrrrr'
+	else
 	@db.execute 'insert into "Comments"
 							(content,
 							created_date,
 							post_id)
 											values (?, datetime(), ?)', 
 											[content, post_id]
-
+	end	
+	#здесь теряестя переменная @error
 	redirect to "/detales/#{post_id}"
 end
